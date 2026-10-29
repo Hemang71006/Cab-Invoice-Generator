@@ -5,15 +5,15 @@ import java.util.List;
 
 /**
  * Problem Statement:
- * Calculate cab fares based on distance and time, apply
- * the minimum fare, and calculate the combined fare
+ * Calculate normal and premium cab fares based on distance
+ * and time, apply minimum fares, and generate invoices
  * for multiple rides.
  *
  * Author: Hemang
  * Date: 22-10-2026
  */
 
-// [Hemang]: Calculate individual and multiple ride fares
+// [Hemang]: Calculate fares and generate invoices
 public class CabInvoiceGenerator {
 
     public double calculateFare(double distance, int time) {
@@ -21,14 +21,23 @@ public class CabInvoiceGenerator {
         return Math.max(totalFare, 5);
     }
 
+    public double calculateFare(Ride ride) {
+        double totalFare;
+
+        if (ride.isPremium()) {
+            totalFare = (ride.getDistance() * 15)
+                    + (ride.getTime() * 2);
+            return Math.max(totalFare, 20);
+        }
+
+        return calculateFare(ride.getDistance(), ride.getTime());
+    }
+
     public double calculateTotalFare(List<Ride> rides) {
         double totalFare = 0;
 
         for (Ride ride : rides) {
-            totalFare += calculateFare(
-                    ride.getDistance(),
-                    ride.getTime()
-            );
+            totalFare += calculateFare(ride);
         }
 
         return totalFare;
@@ -38,5 +47,4 @@ public class CabInvoiceGenerator {
         double totalFare = calculateTotalFare(rides);
         return new Invoice(rides.size(), totalFare);
     }
-
 }

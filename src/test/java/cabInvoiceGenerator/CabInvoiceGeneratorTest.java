@@ -80,5 +80,38 @@ class CabInvoiceGeneratorTest {
         assertEquals(32.5, invoice.getAverageFare());
     }
 
+    @Test
+    void givenPremiumRide_shouldCalculatePremiumFare() {
+        CabInvoiceGenerator generator = new CabInvoiceGenerator();
+
+        Ride ride = new Ride(2.0, 5, true);
+
+        // (2 km * Rs. 15) + (5 minutes * Rs. 2) = Rs. 40
+        assertEquals(40.0, generator.calculateFare(ride));
+    }
+
+    @Test
+    void givenLowCostPremiumRide_shouldApplyMinimumFare() {
+        CabInvoiceGenerator generator = new CabInvoiceGenerator();
+
+        Ride ride = new Ride(0.5, 1, true);
+
+        // Calculated fare = Rs. 9.50; premium minimum = Rs. 20
+        assertEquals(20.0, generator.calculateFare(ride));
+    }
+
+    @Test
+    void givenNormalAndPremiumRides_shouldCalculateCombinedFare() {
+        CabInvoiceGenerator generator = new CabInvoiceGenerator();
+
+        List<Ride> rides = List.of(
+                new Ride(2.0, 5),       // Normal fare = Rs. 25
+                new Ride(2.0, 5, true)  // Premium fare = Rs. 40
+        );
+
+        assertEquals(65.0, generator.calculateTotalFare(rides));
+    }
+
+
 }
 
