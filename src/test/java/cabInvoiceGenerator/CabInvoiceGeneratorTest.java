@@ -3,6 +3,7 @@ package cabInvoiceGenerator;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import java.util.List;
 
 /**
  * Problem Statement:
@@ -48,6 +49,19 @@ class CabInvoiceGeneratorTest {
 
         // Assert: (0.4 * 10) + (1 * 1) = Rs. 5
         assertEquals(5.0, fare);
+    }
+
+
+    @Test
+    void givenMultipleRides_shouldReturnTotalFare() {
+        CabInvoiceGenerator generator = new CabInvoiceGenerator();
+
+        List<Ride> rides = List.of(
+                new Ride(2.0, 5),  // Fare = Rs. 25
+                new Ride(3.0, 10)  // Fare = Rs. 40
+        );
+
+        assertEquals(65.0, generator.calculateTotalFare(rides));
     }
 
 }
