@@ -64,5 +64,21 @@ class CabInvoiceGeneratorTest {
         assertEquals(65.0, generator.calculateTotalFare(rides));
     }
 
+    @Test
+    void givenMultipleRides_shouldReturnEnhancedInvoice() {
+        CabInvoiceGenerator generator = new CabInvoiceGenerator();
+
+        List<Ride> rides = List.of(
+                new Ride(2.0, 5),
+                new Ride(3.0, 10)
+        );
+
+        Invoice invoice = generator.calculateInvoice(rides);
+
+        assertEquals(2, invoice.getTotalRides());
+        assertEquals(65.0, invoice.getTotalFare());
+        assertEquals(32.5, invoice.getAverageFare());
+    }
+
 }
 
